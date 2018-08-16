@@ -1,10 +1,10 @@
 {
-  "name": "@thram/stateless",
+  "name": "thram-stateless",
   "version": "1.0.0",
   "description": "React components for Application and Component state management using render props and Context API",
   "author": "Thram",
   "license": "MIT",
-  "repository": "Thram/@thram/stateless",
+  "repository": "Thram/thram-stateless",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",

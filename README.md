@@ -1,15 +1,15 @@
-# @thram/stateless
+# thram-stateless
 
 > React components for Application and Component state management using render
 > props and Context API
 
-[![NPM](https://img.shields.io/npm/v/@thram/stateless.svg)](https://www.npmjs.com/package/@thram/stateless)
+[![NPM](https://img.shields.io/npm/v/thram-stateless.svg)](https://www.npmjs.com/package/thram-stateless)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save @thram/stateless
+npm install --save thram-stateless
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ npm install --save @thram/stateless
 
 ```jsx
 import React from 'react';
-import { Stateless } from '@thram/stateless';
+import { Stateless } from 'thram-stateless';
 
 const DropDown = () => (
   <Stateless value={{ isOpened: false }}>
@@ -44,7 +44,7 @@ const DropDown = () => (
 
 ```jsx
 import React, { PureComponent } from 'react';
-import { StoreProvider, Store } from '@thram/stateless';
+import { StoreProvider, Store } from 'thram-stateless';
 
 const AppCounter = () => (
   <Store state="counter">

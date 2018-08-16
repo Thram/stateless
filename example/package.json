@@ -1,6 +1,6 @@
 {
-  "name": "@thram/stateless-example",
-  "homepage": "https://Thram.github.io/@thram/stateless",
+  "name": "thram-stateless-example",
+  "homepage": "https://Thram.github.io/thram-stateless",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -9,7 +9,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "^1.1.4",
-    "@thram/stateless": "link:.."
+    "thram-stateless": "link:.."
   },
   "scripts": {
     "start": "react-scripts start",

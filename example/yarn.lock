@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@thram/stateless@link:..":
+"thram-stateless@link:..":
   version "0.0.0"
   uid ""
 
