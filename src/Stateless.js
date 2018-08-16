@@ -24,11 +24,11 @@ export default class Stateless extends PureComponent {
     super(props);
     const { value, events } = props;
     this.state = value;
-    if (events.beforeMount) events.beforeMount({ value });
+    if (events.beforeMount) events.beforeMount(value);
   }
   componentDidMount() {
     const { afterMount } = this.props.events;
-    if (afterMount) afterMount({ value: this.state, change: this.updateState });
+    if (afterMount) afterMount(this.state, this.updateState);
   }
   componentDidUpdate(prevProps) {
     if (prevProps.value !== this.props.value)

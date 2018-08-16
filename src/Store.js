@@ -5,6 +5,12 @@ import Stateless from './Stateless';
 const Context = React.createContext();
 
 class Provider extends PureComponent {
+  static defaultProps = Stateless.defaultProps;
+  static propTypes = {
+    ...Stateless.propTypes,
+    children: PropTypes.node.isRequired,
+  };
+
   afterChange = (nextState, prevState) => {
     const { persistor, events = {} } = this.props;
     persistor.set(nextState);
