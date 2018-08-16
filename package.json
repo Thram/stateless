@@ -1,6 +1,6 @@
 {
   "name": "thram-stateless",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React components for Application and Component state management using render props and Context API",
   "author": "Thram",
   "license": "MIT",

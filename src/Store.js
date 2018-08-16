@@ -8,6 +8,12 @@ class Provider extends PureComponent {
   static defaultProps = Stateless.defaultProps;
   static propTypes = {
     ...Stateless.propTypes,
+    persistor: PropTypes.shape({
+      get: PropTypes.func,
+      set: PropTypes.func,
+      remove: PropTypes.func,
+      clear: PropTypes.func,
+    }),
     children: PropTypes.node.isRequired,
   };
 
@@ -39,10 +45,20 @@ class Provider extends PureComponent {
   };
 }
 class Consumer extends PureComponent {
+  static defaultProps = {
+    reducer: (state, change) => change,
+  };
   static propTypes = {
     state: PropTypes.string,
+    reducer: PropTypes.func,
     children: PropTypes.func.isRequired,
   };
+
+  reduce = (state, change = {}) => {
+    const { reducer } = this.props;
+    return reducer ? reducer(state, change) : change;
+  };
+
   render = () => {
     const { state, children, ...props } = this.props;
     return (
@@ -52,7 +68,11 @@ class Consumer extends PureComponent {
             value: state ? store[state] : store,
             change: value =>
               change(
-                state ? { ...store, [state]: value } : { ...store, ...value },
+                state
+                  ? {
+                      [state]: this.reduce(store[state], value),
+                    }
+                  : this.reduce(store, value),
               ),
             ...props,
           })

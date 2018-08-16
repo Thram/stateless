@@ -12,6 +12,38 @@
 npm install --save thram-stateless
 ```
 
+## Components
+
+### <Stateless />
+
+Add dynamic behaviour to your components without using `state`.
+
+| prop    | type     | description                                                |
+| ------- | -------- | ---------------------------------------------------------- |
+| value   | Object   | Component value                                            |
+| events  | Object   | `beforeMount`, `afterMount`, `beforeChange`, `afterChange` |
+| reducer | function | Reducer function                                           |
+
+### <StoreProvider />
+
+Add dynamic behaviour to a group of components using a `store` that can be consumed by `<Store />`.
+
+| prop      | type     | description                                                |
+| --------- | -------- | ---------------------------------------------------------- |
+| value     | Object   | Component value                                            |
+| events    | Object   | `beforeMount`, `afterMount`, `beforeChange`, `afterChange` |
+| reducer   | function | Reducer function                                           |
+| persistor | Object   | Persistor API to perist data after change and rehydrate    |
+
+### <Store />
+
+Store consumer.
+
+| prop    | type     | description                                         |
+| ------- | -------- | --------------------------------------------------- |
+| state   | String   | Key of the value you want to connect in the `store` |
+| reducer | function | Reducer function                                    |
+
 ## Usage
 
 ### Stateless
@@ -20,27 +52,36 @@ npm install --save thram-stateless
 import React from 'react';
 import { Stateless } from 'thram-stateless';
 
+const DisplayDropDown = ({ isOpened, toggle }) => (
+  <div>
+    <div>
+      Menu <i onClick={toggle}>{isOpened ? '👆' : '👇'}</i>
+    </div>
+    {isOpened && (
+      <ul>
+        <li>Menu 1</li>
+        <li>Menu 2</li>
+        <li>Menu 3</li>
+      </ul>
+    )}
+  </div>
+);
+
 const DropDown = () => (
   <Stateless value={{ isOpened: false }}>
     {({ value, change }) => (
-      <div>
-        <div>
-          Menu <i onClick={() => change({ isOpened: !value.isOpened })}>{value.isOpened ? 👆 : 👇 }</i>
-        </div>
-        {value.isOpened && (
-          <ul>
-            <li>Menu 1</li>
-            <li>Menu 2</li>
-            <li>Menu 3</li>
-          </ul>
-        )}
-      </div>
+      <DisplayDropDown
+        isOpened={value.isOpened}
+        toggle={() => change({ isOpened: !value.isOpened })}
+      />
     )}
   </Stateless>
 );
 ```
 
 ### Application Store
+
+`StoreProvider` implements `Sateless` under the hood so they have similar APIs.
 
 ```jsx
 import React, { PureComponent } from 'react';
@@ -64,6 +105,102 @@ class App extends PureComponent {
       </StoreProvider>,
   );
 }
+```
+
+## Events
+
+`StoreProvider` and `Stateless` has a very simple event lifecyle: `beforeMount`,
+`afterMount`, `beforeChange`, `afterChange`
+
+```jsx
+const App = () => (
+  <StoreProvider
+    events={{
+      beforeMount: value => {
+        /* .. */
+      },
+      afterMount: (value, change) => {
+        /* ... */
+      },
+      beforeChange: (nextValue, prevValue) => {
+        /* ... */
+      },
+      afterChange: (nextValue, prevValue) => {
+        /* ... */
+      },
+    }}
+  >
+    <Counter />
+  </StoreProvider>
+);
+```
+
+```jsx
+const DropDown = () => (
+  <Stateless
+    value={{ isOpened: false }}
+    events={{
+      beforeMount: value => {
+        /* .. */
+      },
+      afterMount: (value, change) => {
+        /* ... */
+      },
+      beforeChange: (nextValue, prevValue) => {
+        /* ... */
+      },
+      afterChange: (nextValue, prevValue) => {
+        /* ... */
+      },
+    }}
+  >
+    {({ value, change }) => (
+      <DisplayDropDown
+        isOpened={value.isOpened}
+        toggle={() => change({ isOpened: !value.isOpened })}
+      />
+    )}
+  </Stateless>
+);
+```
+
+## Reducer
+
+`StoreProvider`, `Store` and `Stateless` can all handle the reducer pattern to
+reduce the state before update:
+
+```jsx
+const ReducedStoreApp = () => (
+  <StoreProvider reducer={(state, value) => ({ counter: value.counter + 1 })}>
+    <Counter />
+  </StoreProvider>
+);
+```
+
+```jsx
+const ReducedGlobalCounter = () => (
+  <Store state="counter" reducer={(state, value) => value + 1}>
+    {({ value, change }) => (
+      <Display value={value} onClick={() => change(value + 1)} />
+    )}
+  </Store>
+);
+```
+
+```jsx
+const ReducedCounter = () => (
+  <Stateless
+    value={{ counter: 1 }}
+    reducer={(state, change) => ({ counter: change.counter + 1 })}
+  >
+    {({ value, change }) => (
+      <Display
+        value={value.counter}
+        onClick={() => change({ counter: value.counter + 1 })}
+      />
+    )}
+  </Stateless>
+);
 ```
 
 ## TODO
