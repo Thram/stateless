@@ -46,7 +46,7 @@ class Provider extends PureComponent {
 }
 class Consumer extends PureComponent {
   static defaultProps = {
-    reducer: (state, change) => change,
+    reducer: (state, value) => value,
   };
   static propTypes = {
     state: PropTypes.string,
@@ -54,9 +54,9 @@ class Consumer extends PureComponent {
     children: PropTypes.func.isRequired,
   };
 
-  reduce = (state, change = {}) => {
+  reduce = (state, value = {}) => {
     const { reducer } = this.props;
-    return reducer ? reducer(state, change) : change;
+    return reducer ? reducer(state, value) : value;
   };
 
   render = () => {

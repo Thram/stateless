@@ -5,7 +5,7 @@ export default class Stateless extends PureComponent {
   static defaultProps = {
     value: {},
     events: {},
-    reducer: (state, change) => change,
+    reducer: (state, value) => value,
   };
 
   static propTypes = {
@@ -34,10 +34,10 @@ export default class Stateless extends PureComponent {
     if (prevProps.value !== this.props.value)
       this.updateState(this.props.value);
   }
-  updateState = (change = {}) => {
+  updateState = (value = {}) => {
     const { events, reducer } = this.props;
     const prevState = { ...this.state };
-    const nextState = reducer(prevState, change);
+    const nextState = reducer(prevState, value);
     if (events.beforeChange) events.beforeChange(nextState, prevState);
     this.setState(nextState);
     if (events.afterChange) events.afterChange(nextState, prevState);

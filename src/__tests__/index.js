@@ -64,7 +64,7 @@ describe('Tests', () => {
     const { getByTestId } = render(
       <Stateless
         value={{ counter: 1 }}
-        reducer={(state, change) => ({ counter: change.counter + 1 })}
+        reducer={(state, value) => ({ counter: value.counter + 1 })}
         events={trackEvents()}
       >
         {({ value, change }) => (
@@ -94,7 +94,7 @@ describe('Tests', () => {
   );
 
   const ReducedCounter = () => (
-    <Store state="counter" reducer={(state, change) => change + 1}>
+    <Store state="counter" reducer={(state, value) => value + 1}>
       {({ value, change }) => (
         <Display value={value} onClick={() => change(value + 1)} />
       )}
@@ -134,7 +134,7 @@ describe('Tests', () => {
   it('StoreProvider - with Reducer', async () => {
     const { getByTestId } = render(
       <StoreProvider
-        reducer={(state, change) => ({ counter: change.counter + 1 })}
+        reducer={(state, value) => ({ counter: value.counter + 1 })}
         value={{ counter: 6 }}
       >
         <ReducedCounter />
